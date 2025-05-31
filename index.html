@@ -1,0 +1,2561 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPL Win Calculator Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+         :root {
+            --primary-color: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary-color: #ec4899;
+            --accent-color: #00b894;
+            --dark-color: #2d3436;
+            --light-color: #f8f9fa;
+            --gradient-primary: linear-gradient(135deg, #6c5ce7, #4834d4);
+            --gradient-secondary: linear-gradient(135deg, #fd79a8, #e84393);
+            --gradient-accent: linear-gradient(135deg, #00b894, #00cec9);
+            --border-radius: 12px;
+            --box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            --transition-speed: 0.3s;
+            /* Updated Team Colors to match official logos */
+            --csk: #f2ca05;
+            /* Chennai Super Kings - Yellow */
+            --dc: #0078bc;
+            /* Delhi Capitals - Blue */
+            --gt: #1c1c47;
+            /* Gujarat Titans - Navy Blue */
+            --kkr: #3a225d;
+            /* Kolkata Knight Riders - Purple */
+            --lsg: #a72056;
+            /* Lucknow Super Giants - Maroon/Blue */
+            --mi: #004b8d;
+            /* Mumbai Indians - Blue */
+            --pbks: #ed1b24;
+            /* Punjab Kings - Red */
+            --rcb: #ec1c24;
+            /* Royal Challengers - Red */
+            --rr: #ff1b9a;
+            /* Rajasthan Royals - Pink */
+            --srh: #f7a721;
+            /* Sunrisers Hyderabad - Orange */
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #0a0a15;
+            color: white;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        /* Enhanced Stadium Background */
+        
+        .stadium-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=3000') no-repeat center center;
+            background-size: cover;
+            filter: brightness(0.2) saturate(1.5) contrast(1.2);
+            z-index: -2;
+            animation: slowZoom 60s ease-in-out infinite alternate;
+        }
+        
+        @keyframes slowZoom {
+            0% {
+                transform: scale(1);
+            }
+            100% {
+                transform: scale(1.05);
+            }
+        }
+        
+        .stadium-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(20, 20, 40, 0.95), rgba(10, 10, 25, 0.95));
+            z-index: -1;
+        }
+        /* Stadium Light Effects */
+        
+        .stadium-light {
+            position: fixed;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+            z-index: -1;
+            filter: blur(30px);
+            opacity: 0.6;
+            animation: lightFlicker 8s infinite;
+        }
+        
+        .light-1 {
+            top: -10%;
+            left: 20%;
+            width: 400px;
+            height: 400px;
+            animation-delay: 0s;
+        }
+        
+        .light-2 {
+            top: -5%;
+            right: 25%;
+            width: 350px;
+            height: 350px;
+            animation-delay: 2s;
+        }
+        
+        .light-3 {
+            bottom: -15%;
+            left: 30%;
+            width: 500px;
+            height: 500px;
+            animation-delay: 4s;
+        }
+        
+        .light-4 {
+            bottom: -10%;
+            right: 20%;
+            width: 450px;
+            height: 450px;
+            animation-delay: 6s;
+        }
+        
+        @keyframes lightFlicker {
+            0%,
+            100% {
+                opacity: 0.5;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.3;
+                transform: scale(1.05);
+            }
+        }
+        /* Cricket field lines */
+        
+        .field-lines {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.05);
+            z-index: -1;
+        }
+        
+        .field-lines::before,
+        .field-lines::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+        }
+        
+        .field-lines::before {
+            width: 70%;
+            height: 70%;
+            border: 2px solid rgba(255, 255, 255, 0.03);
+        }
+        
+        .field-lines::after {
+            width: 40%;
+            height: 40%;
+            border: 2px solid rgba(255, 255, 255, 0.02);
+        }
+        /* Stars background */
+        
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+            animation: starTwinkle var(--duration) infinite ease-in-out;
+            animation-delay: var(--delay);
+        }
+        
+        @keyframes starTwinkle {
+            0%,
+            100% {
+                opacity: 0;
+            }
+            50% {
+                opacity: var(--brightness);
+            }
+        }
+        
+        .page-wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+        }
+        /* Enhanced Header */
+        
+        .header {
+            background-color: rgba(15, 15, 30, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            position: relative;
+            z-index: 10;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, rgba(99, 102, 241, 0.3) 20%, rgba(236, 72, 153, 0.5) 50%, rgba(99, 102, 241, 0.3) 80%, transparent 100%);
+            animation: headerGlow 5s infinite linear;
+        }
+        
+        @keyframes headerGlow {
+            0% {
+                background-position: -500px 0;
+            }
+            100% {
+                background-position: 500px 0;
+            }
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        /* Enhanced Logo with 3D effect */
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+        }
+        
+        .logo i {
+            font-size: 24px;
+            color: #fff;
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(236, 72, 153, 0.4);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+            animation: float 5s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+        
+        .logo i::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(rgba(255, 255, 255, 0.2), transparent);
+            transform: rotate(30deg);
+            animation: logoShine 5s linear infinite;
+        }
+        
+        @keyframes logoShine {
+            0% {
+                transform: translateX(-100%) rotate(30deg);
+            }
+            15%,
+            100% {
+                transform: translateX(100%) rotate(30deg);
+            }
+        }
+        
+        .logo-text {
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff 20%, #ccc 50%, #fff 80%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        /* Enhanced Clock with live seconds */
+        
+        .clock-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(20, 20, 40, 0.7);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 4px 10px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .clock-container::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 6px;
+            background-color: var(--secondary-color);
+            border-radius: 50%;
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.3;
+            }
+        }
+        
+        .clock-container i {
+            margin-right: 8px;
+            font-size: 1rem;
+            color: var(--secondary-color);
+        }
+        
+        .main-container {
+            flex: 1;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        /* Enhanced Title */
+        
+        .title {
+            text-align: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            padding: 15px 10px;
+            position: relative;
+        }
+        
+        .title::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            border-radius: 3px;
+        }
+        /* Date navigation and selection */
+        
+        .date-navigation {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .date-nav-btn {
+            background: rgba(20, 20, 40, 0.7);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 2;
+        }
+        
+        .date-nav-btn:hover {
+            background: rgba(99, 102, 241, 0.7);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(99, 102, 241, 0.3);
+        }
+        
+        .date-display {
+            background: rgba(20, 20, 40, 0.7);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 500;
+            margin: 0 15px;
+            min-width: 240px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s;
+        }
+        
+        .date-display:hover {
+            background: rgba(30, 30, 50, 0.8);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .date-display::after {
+            content: '\f107';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+        /* Date dropdown for manual selection */
+        
+        .date-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 280px;
+            max-height: 300px;
+            overflow-y: auto;
+            background: rgba(20, 20, 40, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            display: none;
+            margin-top: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px 0;
+        }
+        
+        .date-dropdown.show {
+            display: block;
+            animation: fadeInUp 0.3s ease-out forwards;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translate(-50%, 10px);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+        
+        .date-option {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: white;
+            font-size: 0.95rem;
+        }
+        
+        .date-option:hover {
+            background: rgba(99, 102, 241, 0.2);
+        }
+        
+        .date-option.selected {
+            background: rgba(99, 102, 241, 0.3);
+            font-weight: 600;
+        }
+        /* Custom scrollbar for date dropdown */
+        
+        .date-dropdown::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .date-dropdown::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 3px;
+        }
+        
+        .date-dropdown::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+        
+        .date-dropdown::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        /* Enhanced matches container */
+        
+        .matches-container {
+            background: rgba(15, 15, 30, 0.8);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin-bottom: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .matches-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, transparent 30%, rgba(0, 0, 0, 0.3));
+            pointer-events: none;
+        }
+        
+        .matches-title {
+            color: white;
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .matches-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -8px;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, rgba(236, 72, 153, 0.5), transparent);
+        }
+        /* Updated match card to match the image */
+        
+        .match-card {
+            background: #1e1e36;
+            border-radius: 15px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            margin-bottom: 15px;
+        }
+        
+        .match-card:last-child {
+            margin-bottom: 0;
+        }
+        
+        .match-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .match-card.selected {
+            border: 1px solid rgba(236, 72, 153, 0.5);
+            box-shadow: 0 15px 30px rgba(236, 72, 153, 0.2);
+        }
+        /* Match time styling to match image */
+        
+        .match-time {
+            font-weight: 600;
+            color: white;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .match-time i {
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+        }
+        /* Updated match teams to match image */
+        
+        .match-teams {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        /* Enhanced team logos to match image */
+        
+        .team-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+            font-size: 1.5rem;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            margin: 0 auto 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .match-card:hover .team-logo {
+            transform: scale(1.1);
+        }
+        
+        .team-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+        }
+        
+        .team-name {
+            font-size: 1rem;
+            color: white;
+            text-align: center;
+            font-weight: 500;
+            margin-top: 5px;
+        }
+        /* Updated VS badge to match image */
+        
+        .vs-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 30px;
+        }
+        
+        .vs-badge {
+            background: #0f0f1a;
+            color: white;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 0.9rem;
+            font-weight: 600;
+            z-index: 1;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        /* Updated venue style to match image */
+        
+        .match-venue {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        
+        .match-venue i {
+            color: var(--secondary-color);
+            font-size: 0.8rem;
+        }
+        /* Horizontal layout ONLY for days with multiple matches */
+        
+        .multi-match-day {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: space-between;
+        }
+        
+        .multi-match-day .match-card {
+            flex: 1;
+            min-width: 300px;
+            max-width: calc(50% - 8px);
+            margin-bottom: 0;
+        }
+        /* Match time similar to your screenshot */
+        
+        .multi-match-day .match-time {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-size: 1rem;
+            margin-bottom: 0;
+        }
+        /* Make venue display match your screenshot */
+        
+        .multi-match-day .match-venue {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.9rem;
+            padding: 10px 0;
+            color: rgba(255, 255, 255, 0.7);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        /* Enhanced content grid */
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        /* Cards */
+        
+        .card {
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            background: rgba(15, 15, 30, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+        /* Card headers */
+        
+        .card-header {
+            padding: 20px;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .input-card .card-header {
+            background: linear-gradient(45deg, #4834d4, #6c5ce7);
+        }
+        
+        .result-card .card-header {
+            background: linear-gradient(45deg, #e84393, #fd79a8);
+        }
+        
+        .card-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient( circle at center, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+            opacity: 0.3;
+            transform: rotate(30deg);
+        }
+        
+        .card-header h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        
+        .card-header p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .card-body {
+            padding: 20px;
+            position: relative;
+        }
+        
+        .input-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .input-group {
+            flex: 1;
+            position: relative;
+        }
+        
+        .input-group label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: white;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .team-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        /* Mini logo */
+        
+        .mini-logo {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            position: relative;
+        }
+        /* Inputs */
+        
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(99, 102, 241, 0.5);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+        
+        .input-group input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+        /* Enhanced Button */
+        
+        .calculate-btn {
+            background: linear-gradient(to right, var(--accent-color), #0cb8a1);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 14px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+            box-shadow: 0 8px 20px rgba(0, 184, 148, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 20px;
+            font-family: 'Poppins', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .calculate-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient( 90deg, transparent 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%);
+            transition: all 0.4s;
+        }
+        
+        .calculate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(0, 184, 148, 0.4);
+        }
+        
+        .calculate-btn:hover::before {
+            left: 100%;
+        }
+        
+        .calculate-btn:active {
+            transform: translateY(-1px);
+        }
+        /* Updated Betting Results Styling */
+        
+        .betting-results-container {
+            background: #171727;
+            border-radius: 12px;
+            padding: 15px;
+        }
+        
+        .result-item {
+            background: #151530;
+            border-radius: 12px;
+            padding: 15px 20px;
+            margin-bottom: 12px;
+            border: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        
+        .result-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .result-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            flex: 1;
+        }
+        
+        .result-values {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .result-column {
+            text-align: center;
+            min-width: 90px;
+        }
+        
+        .column-label {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 4px;
+        }
+        
+        .result-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .positive-value {
+            color: #00d1b2;
+        }
+        
+        .negative-value {
+            color: #ff7675;
+        }
+        
+        .both-teams-value {
+            min-width: 195px;
+            text-align: center;
+        }
+        /* Team badges */
+        
+        .team-badge {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.7rem;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+        /* Enhanced Footer */
+        
+        .footer {
+            background: rgba(15, 15, 30, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 20px 0;
+            text-align: center;
+            margin-top: 30px;
+            position: relative;
+            overflow: hidden;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, rgba(99, 102, 241, 0.3) 20%, rgba(236, 72, 153, 0.5) 50%, rgba(99, 102, 241, 0.3) 80%, transparent 100%);
+        }
+        
+        .footer-content {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.85rem;
+            position: relative;
+            z-index: 1;
+        }
+        /* Team-specific brand colors */
+        
+        .csk-bg {
+            background: var(--csk);
+            color: #000;
+        }
+        
+        .dc-bg {
+            background: var(--dc);
+        }
+        
+        .gt-bg {
+            background: var(--gt);
+        }
+        
+        .kkr-bg {
+            background: var(--kkr);
+        }
+        
+        .lsg-bg {
+            background: var(--lsg);
+        }
+        
+        .mi-bg {
+            background: var(--mi);
+        }
+        
+        .pbks-bg {
+            background: var(--pbks);
+        }
+        
+        .rcb-bg {
+            background: var(--rcb);
+        }
+        
+        .rr-bg {
+            background: var(--rr);
+        }
+        
+        .srh-bg {
+            background: var(--srh);
+            color: #000;
+        }
+        /* Additional style for playoff matches or special matches */
+        
+        .match-card .match-description {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(45deg, #e84393, #fd79a8);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        /* Responsive Styles */
+        
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            .nav-container {
+                flex-direction: column;
+                gap: 10px;
+                padding: 10px;
+            }
+            .input-row {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .title {
+                font-size: 1.5rem;
+            }
+            .match-teams {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .vs-container {
+                margin: 10px 0;
+            }
+            .date-dropdown {
+                width: 90%;
+            }
+            .result-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .result-values {
+                width: 100%;
+                margin-top: 10px;
+                justify-content: space-between;
+            }
+            /* Stack cards on mobile for multi-match days */
+            .multi-match-day {
+                flex-direction: column;
+            }
+            .multi-match-day .match-card {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Stadium Background Effect -->
+    <div class="stadium-bg"></div>
+    <div class="stadium-light light-1"></div>
+    <div class="stadium-light light-2"></div>
+    <div class="stadium-light light-3"></div>
+    <div class="stadium-light light-4"></div>
+    <div class="field-lines"></div>
+    <div class="stars" id="stars"></div>
+
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="nav-container">
+                <div class="logo">
+                    <i class="fas fa-cricket"></i>
+                    <div class="logo-text">IPL Win Calculator Pro</div>
+                </div>
+                <div class="clock-container" id="currentDateTime">
+                    <i class="far fa-clock"></i>
+                    <span>30/03/2025 11:20:48 AM</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-container">
+            <h1 class="title">IPL Win Probability Calculator</h1>
+
+            <!-- Updated date navigation with side sliders and manual selection -->
+            <div class="date-navigation">
+                <button class="date-nav-btn" id="prevDate">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="date-display" id="dateDisplay">
+                    30 March 2025 (Sun)
+                </div>
+                <button class="date-nav-btn" id="nextDate">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <div class="date-dropdown" id="dateDropdown">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="matches-container">
+                <h3 class="matches-title">Today's Matches</h3>
+                <div id="matchContainer">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="content-grid">
+                <div class="card input-card">
+                    <div class="card-header">
+                        <h2>Enter Betting Values</h2>
+                        <p>Fill in the betting odds to calculate results</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label>
+                                    <div class="team-indicator" id="teamAIndicator">
+                                        <div class="mini-logo dc-bg">DC</div>
+                                        <span>DC BET:</span>
+                                    </div>
+                                </label>
+                                <input type="number" id="A" placeholder="Enter DC bet amount" required>
+                            </div>
+                            <div class="input-group">
+                                <label>
+                                    <div class="team-indicator" id="teamBIndicator">
+                                        <div class="mini-logo srh-bg">SRH</div>
+                                        <span>SRH BET:</span>
+                                    </div>
+                                </label>
+                                <input type="number" id="B" placeholder="Enter SRH bet amount" required>
+                            </div>
+                        </div>
+
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label>
+                                    <div class="team-indicator" id="teamAPriceIndicator">
+                                        <div class="mini-logo dc-bg">DC</div>
+                                        <span>DC Bet Price:</span>
+                                    </div>
+                                </label>
+                                <input type="number" id="x" placeholder="Enter DC bet price" required>
+                            </div>
+                            <div class="input-group">
+                                <label>
+                                    <div class="team-indicator" id="teamBPriceIndicator">
+                                        <div class="mini-logo srh-bg">SRH</div>
+                                        <span>SRH Bet Price:</span>
+                                    </div>
+                                </label>
+                                <input type="number" id="y" placeholder="Enter SRH bet price" required>
+                            </div>
+                        </div>
+
+                        <button type="button" class="calculate-btn" id="calculateBtn">
+                            <i class="fas fa-calculator"></i> Calculate Win Probability
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card result-card">
+                    <div class="card-header">
+                        <h2>Betting Results</h2>
+                    </div>
+                    <div class="card-body betting-results-container">
+                        <div class="result-item">
+                            <div class="result-label" id="teamAResult">
+                                <div class="team-badge dc-bg">DC</div> Delhi Capitals:
+                            </div>
+                            <div class="result-values">
+                                <div class="result-column">
+                                    <div class="column-label">Single</div>
+                                    <div class="result-value" id="xWinsSingle">0.00</div>
+                                </div>
+                                <div class="result-column">
+                                    <div class="column-label">Allover</div>
+                                    <div class="result-value" id="xWinsAllover">0.00</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="result-item">
+                            <div class="result-label" id="teamBResult">
+                                <div class="team-badge srh-bg">SRH</div> Sunrisers Hyderabad:
+                            </div>
+                            <div class="result-values">
+                                <div class="result-column">
+                                    <div class="column-label">Single</div>
+                                    <div class="result-value" id="yWinsSingle">0.00</div>
+                                </div>
+                                <div class="result-column">
+                                    <div class="column-label">Allover</div>
+                                    <div class="result-value" id="yWinsAllover">0.00</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="result-item">
+                            <div class="result-label">
+                                <i class="fas fa-users"></i> Both Teams:
+                            </div>
+                            <div class="result-value both-teams-value" id="bothWins">0.00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-content">
+                &copy; 2025 IPL Win Calculator Pro | All Rights Reserved
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Team color classes lookup
+        const teamClasses = {
+            "Chennai Super Kings": "csk-bg",
+            "Delhi Capitals": "dc-bg",
+            "Gujarat Titans": "gt-bg",
+            "Kolkata Knight Riders": "kkr-bg",
+            "Lucknow Super Giants": "lsg-bg",
+            "Mumbai Indians": "mi-bg",
+            "Punjab Kings": "pbks-bg",
+            "Royal Challengers Bengaluru": "rcb-bg",
+            "Rajasthan Royals": "rr-bg",
+            "Sunrisers Hyderabad": "srh-bg"
+        };
+
+        // Complete IPL 2025 Schedule Data with all matches
+        const iplSchedule = [{
+                id: 1,
+                date: "21-Mar-25",
+                day: "Fri",
+                time: "7:30 PM",
+                teamA: "Chennai Super Kings",
+                teamB: "Royal Challengers Bengaluru",
+                venue: "Chennai",
+                teamAShort: "CSK",
+                teamBShort: "RCB"
+            }, {
+                id: 2,
+                date: "22-Mar-25",
+                day: "Sat",
+                time: "3:30 PM",
+                teamA: "Punjab Kings",
+                teamB: "Delhi Capitals",
+                venue: "Mohali",
+                teamAShort: "PBKS",
+                teamBShort: "DC"
+            }, {
+                id: 3,
+                date: "22-Mar-25",
+                day: "Sat",
+                time: "7:30 PM",
+                teamA: "Kolkata Knight Riders",
+                teamB: "Mumbai Indians",
+                venue: "Kolkata",
+                teamAShort: "KKR",
+                teamBShort: "MI"
+            }, {
+                id: 4,
+                date: "23-Mar-25",
+                day: "Sun",
+                time: "3:30 PM",
+                teamA: "Rajasthan Royals",
+                teamB: "Lucknow Super Giants",
+                venue: "Jaipur",
+                teamAShort: "RR",
+                teamBShort: "LSG"
+            }, {
+                id: 5,
+                date: "23-Mar-25",
+                day: "Sun",
+                time: "7:30 PM",
+                teamA: "Gujarat Titans",
+                teamB: "Sunrisers Hyderabad",
+                venue: "Ahmedabad",
+                teamAShort: "GT",
+                teamBShort: "SRH"
+            }, {
+                id: 6,
+                date: "24-Mar-25",
+                day: "Mon",
+                time: "7:30 PM",
+                teamA: "Royal Challengers Bengaluru",
+                teamB: "Punjab Kings",
+                venue: "Bengaluru",
+                teamAShort: "RCB",
+                teamBShort: "PBKS"
+            }, {
+                id: 7,
+                date: "25-Mar-25",
+                day: "Tue",
+                time: "7:30 PM",
+                teamA: "Delhi Capitals",
+                teamB: "Kolkata Knight Riders",
+                venue: "Delhi",
+                teamAShort: "DC",
+                teamBShort: "KKR"
+            }, {
+                id: 8,
+                date: "26-Mar-25",
+                day: "Wed",
+                time: "7:30 PM",
+                teamA: "Mumbai Indians",
+                teamB: "Chennai Super Kings",
+                venue: "Mumbai",
+                teamAShort: "MI",
+                teamBShort: "CSK"
+            }, {
+                id: 9,
+                date: "27-Mar-25",
+                day: "Thu",
+                time: "7:30 PM",
+                teamA: "Sunrisers Hyderabad",
+                teamB: "Lucknow Super Giants",
+                venue: "Hyderabad",
+                teamAShort: "SRH",
+                teamBShort: "LSG"
+            }, {
+                id: 10,
+                date: "28-Mar-25",
+                day: "Fri",
+                time: "7:30 PM",
+                teamA: "Chennai Super Kings",
+                teamB: "Royal Challengers Bengaluru",
+                venue: "Chennai",
+                teamAShort: "CSK",
+                teamBShort: "RCB"
+            }, {
+                id: 11,
+                date: "29-Mar-25",
+                day: "Sat",
+                time: "7:30 PM",
+                teamA: "Gujarat Titans",
+                teamB: "Mumbai Indians",
+                venue: "Ahmedabad",
+                teamAShort: "GT",
+                teamBShort: "MI"
+            }, {
+                id: 12,
+                date: "30-Mar-25",
+                day: "Sun",
+                time: "3:30 PM",
+                teamA: "Delhi Capitals",
+                teamB: "Sunrisers Hyderabad",
+                venue: "Visakhapatnam",
+                teamAShort: "DC",
+                teamBShort: "SRH"
+            }, {
+                id: 13,
+                date: "30-Mar-25",
+                day: "Sun",
+                time: "7:30 PM",
+                teamA: "Rajasthan Royals",
+                teamB: "Chennai Super Kings",
+                venue: "Guwahati",
+                teamAShort: "RR",
+                teamBShort: "CSK"
+            }, {
+                id: 14,
+                date: "31-Mar-25",
+                day: "Mon",
+                time: "7:30 PM",
+                teamA: "Mumbai Indians",
+                teamB: "Kolkata Knight Riders",
+                venue: "Mumbai",
+                teamAShort: "MI",
+                teamBShort: "KKR"
+            }, {
+                id: 15,
+                date: "01-Apr-25",
+                day: "Tue",
+                time: "7:30 PM",
+                teamA: "Lucknow Super Giants",
+                teamB: "Punjab Kings",
+                venue: "Lucknow",
+                teamAShort: "LSG",
+                teamBShort: "PBKS"
+            }, {
+                id: 16,
+                date: "02-Apr-25",
+                day: "Wed",
+                time: "7:30 PM",
+                teamA: "Royal Challengers Bengaluru",
+                teamB: "Gujarat Titans",
+                venue: "Bengaluru",
+                teamAShort: "RCB",
+                teamBShort: "GT"
+            }, {
+                id: 17,
+                date: "03-Apr-25",
+                day: "Thu",
+                time: "7:30 PM",
+                teamA: "Kolkata Knight Riders",
+                teamB: "Sunrisers Hyderabad",
+                venue: "Kolkata",
+                teamAShort: "KKR",
+                teamBShort: "SRH"
+            }, {
+                id: 18,
+                date: "04-Apr-25",
+                day: "Fri",
+                time: "7:30 PM",
+                teamA: "Lucknow Super Giants",
+                teamB: "Mumbai Indians",
+                venue: "Lucknow",
+                teamAShort: "LSG",
+                teamBShort: "MI"
+            }, {
+                id: 19,
+                date: "05-Apr-25",
+                day: "Sat",
+                time: "3:30 PM",
+                teamA: "Chennai Super Kings",
+                teamB: "Delhi Capitals",
+                venue: "Chennai",
+                teamAShort: "CSK",
+                teamBShort: "DC"
+            }, {
+                id: 20,
+                date: "05-Apr-25",
+                day: "Sat",
+                time: "7:30 PM",
+                teamA: "Punjab Kings",
+                teamB: "Rajasthan Royals",
+                venue: "New Chandigarh",
+                teamAShort: "PBKS",
+                teamBShort: "RR"
+            }, {
+                id: 21,
+                date: "06-Apr-25",
+                day: "Sun",
+                time: "3:30 PM",
+                teamA: "Kolkata Knight Riders",
+                teamB: "Lucknow Super Giants",
+                venue: "Kolkata",
+                teamAShort: "KKR",
+                teamBShort: "LSG"
+            }, {
+                id: 22,
+                date: "06-Apr-25",
+                day: "Sun",
+                time: "7:30 PM",
+                teamA: "Sunrisers Hyderabad",
+                teamB: "Gujarat Titans",
+                venue: "Hyderabad",
+                teamAShort: "SRH",
+                teamBShort: "GT"
+            }, {
+                id: 23,
+                date: "07-Apr-25",
+                day: "Mon",
+                time: "7:30 PM",
+                teamA: "Mumbai Indians",
+                teamB: "Royal Challengers Bengaluru",
+                venue: "Mumbai",
+                teamAShort: "MI",
+                teamBShort: "RCB"
+            }, {
+                id: 24,
+                date: "08-Apr-25",
+                day: "Tue",
+                time: "7:30 PM",
+                teamA: "Punjab Kings",
+                teamB: "Chennai Super Kings",
+                venue: "New Chandigarh",
+                teamAShort: "PBKS",
+                teamBShort: "CSK"
+            }, {
+                id: 25,
+                date: "09-Apr-25",
+                day: "Wed",
+                time: "7:30 PM",
+                teamA: "Gujarat Titans",
+                teamB: "Rajasthan Royals",
+                venue: "Ahmedabad",
+                teamAShort: "GT",
+                teamBShort: "RR"
+            }, {
+                id: 26,
+                date: "10-Apr-25",
+                day: "Thu",
+                time: "7:30 PM",
+                teamA: "Royal Challengers Bengaluru",
+                teamB: "Delhi Capitals",
+                venue: "Bengaluru",
+                teamAShort: "RCB",
+                teamBShort: "DC"
+            }, {
+                id: 27,
+                date: "11-Apr-25",
+                day: "Fri",
+                time: "7:30 PM",
+                teamA: "Chennai Super Kings",
+                teamB: "Kolkata Knight Riders",
+                venue: "Chennai",
+                teamAShort: "CSK",
+                teamBShort: "KKR"
+            }, {
+                id: 28,
+                date: "12-Apr-25",
+                day: "Sat",
+                time: "3:30 PM",
+                teamA: "Lucknow Super Giants",
+                teamB: "Gujarat Titans",
+                venue: "Lucknow",
+                teamAShort: "LSG",
+                teamBShort: "GT"
+            }, {
+                id: 29,
+                date: "12-Apr-25",
+                day: "Sat",
+                time: "7:30 PM",
+                teamA: "Sunrisers Hyderabad",
+                teamB: "Punjab Kings",
+                venue: "Hyderabad",
+                teamAShort: "SRH",
+                teamBShort: "PBKS"
+            }, {
+                id: 30,
+                date: "13-Apr-25",
+                day: "Sun",
+                time: "3:30 PM",
+                teamA: "Rajasthan Royals",
+                teamB: "Royal Challengers Bengaluru",
+                venue: "Jaipur",
+                teamAShort: "RR",
+                teamBShort: "RCB"
+            }, {
+                id: 31,
+                date: "13-Apr-25",
+                day: "Sun",
+                time: "7:30 PM",
+                teamA: "Delhi Capitals",
+                teamB: "Mumbai Indians",
+                venue: "Delhi",
+                teamAShort: "DC",
+                teamBShort: "MI"
+            }, {
+                id: 32,
+                date: "14-Apr-25",
+                day: "Mon",
+                time: "7:30 PM",
+                teamA: "Lucknow Super Giants",
+                teamB: "Chennai Super Kings",
+                venue: "Lucknow",
+                teamAShort: "LSG",
+                teamBShort: "CSK"
+            }, {
+                id: 33,
+                date: "15-Apr-25",
+                day: "Tue",
+                time: "7:30 PM",
+                teamA: "Punjab Kings",
+                teamB: "Kolkata Knight Riders",
+                venue: "New Chandigarh",
+                teamAShort: "PBKS",
+                teamBShort: "KKR"
+            }, {
+                id: 34,
+                date: "16-Apr-25",
+                day: "Wed",
+                time: "7:30 PM",
+                teamA: "Delhi Capitals",
+                teamB: "Rajasthan Royals",
+                venue: "Delhi",
+                teamAShort: "DC",
+                teamBShort: "RR"
+            }, {
+                id: 35,
+                date: "17-Apr-25",
+                day: "Thu",
+                time: "7:30 PM",
+                teamA: "Mumbai Indians",
+                teamB: "Sunrisers Hyderabad",
+                venue: "Mumbai",
+                teamAShort: "MI",
+                teamBShort: "SRH"
+            }, {
+                id: 36,
+                date: "18-Apr-25",
+                day: "Fri",
+                time: "7:30 PM",
+                teamA: "Royal Challengers Bengaluru",
+                teamB: "Punjab Kings",
+                venue: "Bengaluru",
+                teamAShort: "RCB",
+                teamBShort: "PBKS"
+            }, {
+                id: 37,
+                date: "19-Apr-25",
+                day: "Sat",
+                time: "3:30 PM",
+                teamA: "Gujarat Titans",
+                teamB: "Delhi Capitals",
+                venue: "Ahmedabad",
+                teamAShort: "GT",
+                teamBShort: "DC"
+            }, {
+                id: 38,
+                date: "19-Apr-25",
+                day: "Sat",
+                time: "7:30 PM",
+                teamA: "Rajasthan Royals",
+                teamB: "Lucknow Super Giants",
+                venue: "Jaipur",
+                teamAShort: "RR",
+                teamBShort: "LSG"
+            }, {
+                id: 39,
+                date: "20-Apr-25",
+                day: "Sun",
+                time: "3:30 PM",
+                teamA: "Punjab Kings",
+                teamB: "Royal Challengers Bengaluru",
+                venue: "New Chandigarh",
+                teamAShort: "PBKS",
+                teamBShort: "RCB"
+            }, {
+                id: 40,
+                date: "20-Apr-25",
+                day: "Sun",
+                time: "7:30 PM",
+                teamA: "Mumbai Indians",
+                teamB: "Chennai Super Kings",
+                venue: "Mumbai",
+                teamAShort: "MI",
+                teamBShort: "CSK"
+            }, {
+                id: 41,
+                date: "21-Apr-25",
+                day: "Mon",
+                time: "7:30 PM",
+                teamA: "Kolkata Knight Riders",
+                teamB: "Gujarat Titans",
+                venue: "Kolkata",
+                teamAShort: "KKR",
+                teamBShort: "GT"
+            }, {
+                id: 42,
+                date: "22-Apr-25",
+                day: "Tue",
+                time: "7:30 PM",
+                teamA: "Lucknow Super Giants",
+                teamB: "Delhi Capitals",
+                venue: "Lucknow",
+                teamAShort: "LSG",
+                teamBShort: "DC"
+            }, {
+                id: 43,
+                date: "23-Apr-25",
+                day: "Wed",
+                time: "7:30 PM",
+                teamA: "Sunrisers Hyderabad",
+                teamB: "Mumbai Indians",
+                venue: "Hyderabad",
+                teamAShort: "SRH",
+                teamBShort: "MI"
+            }, {
+                id: 44,
+                date: "24-Apr-25",
+                day: "Thu",
+                time: "7:30 PM",
+                teamA: "Royal Challengers Bengaluru",
+                teamB: "Rajasthan Royals",
+                venue: "Bengaluru",
+                teamAShort: "RCB",
+                teamBShort: "RR"
+            }, {
+                id: 45,
+                date: "25-Apr-25",
+                day: "Fri",
+                time: "7:30 PM",
+                teamA: "Chennai Super Kings",
+                teamB: "Sunrisers Hyderabad",
+                venue: "Chennai",
+                teamAShort: "CSK",
+                teamBShort: "SRH"
+            }, {
+                id: 46,
+                date: "26-Apr-25",
+                day: "Sat",
+                time: "7:30 PM",
+                teamA: "Kolkata Knight Riders",
+                teamB: "Punjab Kings",
+                venue: "Kolkata",
+                teamAShort: "KKR",
+                teamBShort: "PBKS"
+            }, {
+                id: 47,
+                date: "27-Apr-25",
+                day: "Sun",
+                time: "3:30 PM",
+                teamA: "Mumbai Indians",
+                teamB: "Lucknow Super Giants",
+                venue: "Mumbai",
+                teamAShort: "MI",
+                teamBShort: "LSG"
+            }, {
+                id: 48,
+                date: "27-Apr-25",
+                day: "Sun",
+                time: "7:30 PM",
+                teamA: "Delhi Capitals",
+                teamB: "Royal Challengers Bengaluru",
+                venue: "Delhi",
+                teamAShort: "DC",
+                teamBShort: "RCB"
+            }, {
+                id: 49,
+                date: "28-Apr-25",
+                day: "Mon",
+                time: "7:30 PM",
+                teamA: "Rajasthan Royals",
+                teamB: "Gujarat Titans",
+                venue: "Jaipur",
+                teamAShort: "RR",
+                teamBShort: "GT"
+            }, {
+                id: 50,
+                date: "29-Apr-25",
+                day: "Tue",
+                time: "7:30 PM",
+                teamA: "Delhi Capitals",
+                teamB: "Kolkata Knight Riders",
+                venue: "Delhi",
+                teamAShort: "DC",
+                teamBShort: "KKR"
+            }, {
+                id: 51,
+                date: "30-Apr-25",
+                day: "Wed",
+                time: "7:30 PM",
+                teamA: "Chennai Super Kings",
+                teamB: "Punjab Kings",
+                venue: "Chennai",
+                teamAShort: "CSK",
+                teamBShort: "PBKS"
+            }, {
+                id: 52,
+                date: "01-May-25",
+                day: "Thu",
+                time: "7:30 PM",
+                teamA: "Rajasthan Royals",
+                teamB: "Mumbai Indians",
+                venue: "Jaipur",
+                teamAShort: "RR",
+                teamBShort: "MI"
+            }, {
+                id: 53,
+                date: "02-May-25",
+                day: "Fri",
+                time: "7:30 PM",
+                teamA: "Gujarat Titans",
+                teamB: "Sunrisers Hyderabad",
+                venue: "Ahmedabad",
+                teamAShort: "GT",
+                teamBShort: "SRH"
+            }, {
+                id: 54,
+                date: "03-May-25",
+                day: "Sat",
+                time: "7:30 PM",
+                teamA: "Royal Challengers Bengaluru",
+                teamB: "Chennai Super Kings",
+                venue: "Bengaluru",
+                teamAShort: "RCB",
+                teamBShort: "CSK"
+            }, {
+                id: 55,
+                date: "04-May-25",
+                day: "Sun",
+                time: "3:30 PM",
+                teamA: "Kolkata Knight Riders",
+                teamB: "Rajasthan Royals",
+                venue: "Kolkata",
+                teamAShort: "KKR",
+                teamBShort: "RR"
+            }, {
+                id: 56,
+                date: "04-May-25",
+                day: "Sun",
+                time: "7:30 PM",
+                teamA: "Punjab Kings",
+                teamB: "Lucknow Super Giants",
+                venue: "Dharamshala",
+                teamAShort: "PBKS",
+                teamBShort: "LSG"
+            }, {
+                id: 57,
+                date: "05-May-25",
+                day: "Mon",
+                time: "7:30 PM",
+                teamA: "Sunrisers Hyderabad",
+                teamB: "Delhi Capitals",
+                venue: "Hyderabad",
+                teamAShort: "SRH",
+                teamBShort: "DC"
+            }, {
+                id: 58,
+                date: "06-May-25",
+                day: "Tue",
+                time: "7:30 PM",
+                teamA: "Mumbai Indians",
+                teamB: "Gujarat Titans",
+                venue: "Mumbai",
+                teamAShort: "MI",
+                teamBShort: "GT"
+            }, {
+                id: 59,
+                date: "07-May-25",
+                day: "Wed",
+                time: "7:30 PM",
+                teamA: "Kolkata Knight Riders",
+                teamB: "Chennai Super Kings",
+                venue: "Kolkata",
+                teamAShort: "KKR",
+                teamBShort: "CSK"
+            }, {
+                id: 60,
+                date: "08-May-25",
+                day: "Thu",
+                time: "7:30 PM",
+                teamA: "Punjab Kings",
+                teamB: "Delhi Capitals",
+                venue: "Dharamshala",
+                teamAShort: "PBKS",
+                teamBShort: "DC"
+            }, {
+                id: 61,
+                date: "09-May-25",
+                day: "Fri",
+                time: "7:30 PM",
+                teamA: "Lucknow Super Giants",
+                teamB: "Royal Challengers Bengaluru",
+                venue: "Lucknow",
+                teamAShort: "LSG",
+                teamBShort: "RCB"
+            }, {
+                id: 62,
+                date: "10-May-25",
+                day: "Sat",
+                time: "7:30 PM",
+                teamA: "Sunrisers Hyderabad",
+                teamB: "Kolkata Knight Riders",
+                venue: "Hyderabad",
+                teamAShort: "SRH",
+                teamBShort: "KKR"
+            }, {
+                id: 63,
+                date: "11-May-25",
+                day: "Sun",
+                time: "3:30 PM",
+                teamA: "Punjab Kings",
+                teamB: "Mumbai Indians",
+                venue: "Dharamshala",
+                teamAShort: "PBKS",
+                teamBShort: "MI"
+            }, {
+                id: 64,
+                date: "11-May-25",
+                day: "Sun",
+                time: "7:30 PM",
+                teamA: "Delhi Capitals",
+                teamB: "Gujarat Titans",
+                venue: "Delhi",
+                teamAShort: "DC",
+                teamBShort: "GT"
+            }, {
+                id: 65,
+                date: "12-May-25",
+                day: "Mon",
+                time: "7:30 PM",
+                teamA: "Chennai Super Kings",
+                teamB: "Rajasthan Royals",
+                venue: "Chennai",
+                teamAShort: "CSK",
+                teamBShort: "RR"
+            }, {
+                id: 66,
+                date: "13-May-25",
+                day: "Tue",
+                time: "7:30 PM",
+                teamA: "Royal Challengers Bengaluru",
+                teamB: "Sunrisers Hyderabad",
+                venue: "Bengaluru",
+                teamAShort: "RCB",
+                teamBShort: "SRH"
+            }, {
+                id: 67,
+                date: "14-May-25",
+                day: "Wed",
+                time: "7:30 PM",
+                teamA: "Gujarat Titans",
+                teamB: "Lucknow Super Giants",
+                venue: "Ahmedabad",
+                teamAShort: "GT",
+                teamBShort: "LSG"
+            }, {
+                id: 68,
+                date: "15-May-25",
+                day: "Thu",
+                time: "7:30 PM",
+                teamA: "Mumbai Indians",
+                teamB: "Delhi Capitals",
+                venue: "Mumbai",
+                teamAShort: "MI",
+                teamBShort: "DC"
+            }, {
+                id: 69,
+                date: "16-May-25",
+                day: "Fri",
+                time: "7:30 PM",
+                teamA: "Rajasthan Royals",
+                teamB: "Punjab Kings",
+                venue: "Jaipur",
+                teamAShort: "RR",
+                teamBShort: "PBKS"
+            }, {
+                id: 70,
+                date: "17-May-25",
+                day: "Sat",
+                time: "7:30 PM",
+                teamA: "Royal Challengers Bengaluru",
+                teamB: "Kolkata Knight Riders",
+                venue: "Bengaluru",
+                teamAShort: "RCB",
+                teamBShort: "KKR"
+            }, {
+                id: 71,
+                date: "18-May-25",
+                day: "Sun",
+                time: "3:30 PM",
+                teamA: "Gujarat Titans",
+                teamB: "Chennai Super Kings",
+                venue: "Ahmedabad",
+                teamAShort: "GT",
+                teamBShort: "CSK"
+            }, {
+                id: 72,
+                date: "19-May-25",
+                day: "Mon",
+                time: "7:30 PM",
+                teamA: "Lucknow Super Giants",
+                teamB: "Sunrisers Hyderabad",
+                venue: "Lucknow",
+                teamAShort: "LSG",
+                teamBShort: "SRH"
+            },
+
+            // Playoffs
+            {
+                id: 73,
+                date: "20-May-25",
+                day: "Tue",
+                time: "7:30 PM",
+                teamA: "TBD (Q1)",
+                teamB: "TBD (Q2)",
+                venue: "Ahmedabad",
+                teamAShort: "TBD",
+                teamBShort: "TBD",
+                description: "Qualifier 1"
+            }, {
+                id: 74,
+                date: "21-May-25",
+                day: "Wed",
+                time: "7:30 PM",
+                teamA: "TBD (E1)",
+                teamB: "TBD (E2)",
+                venue: "Chennai",
+                teamAShort: "TBD",
+                teamBShort: "TBD",
+                description: "Eliminator"
+            }, {
+                id: 75,
+                date: "23-May-25",
+                day: "Fri",
+                time: "7:30 PM",
+                teamA: "TBD (QL1)",
+                teamB: "TBD (EW)",
+                venue: "Mumbai",
+                teamAShort: "TBD",
+                teamBShort: "TBD",
+                description: "Qualifier 2"
+            }, {
+                id: 76,
+                date: "25-May-25",
+                day: "Sun",
+                time: "7:30 PM",
+                teamA: "TBD (FT1)",
+                teamB: "TBD (FT2)",
+                venue: "Mumbai",
+                teamAShort: "TBD",
+                teamBShort: "TBD",
+                description: "Final"
+            }
+        ];
+
+
+        // Current date index in schedule
+        let currentDateIndex = 0;
+
+        // Create stars for background
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const starCount = 100;
+
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+
+                // Random positioning
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+
+                star.style.left = `${x}%`;
+                star.style.top = `${y}%`;
+
+                // Random animation properties
+                const duration = 3 + Math.random() * 5;
+                const delay = Math.random() * 5;
+                const brightness = 0.3 + Math.random() * 0.7;
+
+                star.style.setProperty('--duration', `${duration}s`);
+                star.style.setProperty('--delay', `${delay}s`);
+                star.style.setProperty('--brightness', brightness);
+
+                starsContainer.appendChild(star);
+            }
+        }
+
+        function updateDateTime() {
+            const dateTimeElement = document.getElementById('currentDateTime');
+            const now = new Date();
+
+            // Format as DD/MM/YYYY HH:MM:SS AM/PM
+            const day = String(now.getDate()).padStart(2, '0');
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const year = now.getFullYear();
+            const time = now.toLocaleTimeString();
+
+            dateTimeElement.innerHTML = `<i class="far fa-clock"></i> ${day}/${month}/${year} ${time}`;
+        }
+
+        function formatDateForDisplay(dateStr) {
+            // Convert "27-Mar-25" to a clearer format with full month name
+            const parts = dateStr.split('-');
+            const day = parts[0];
+
+            // Use full month names to avoid ambiguity
+            const monthNames = {
+                "Jan": "January",
+                "Feb": "February",
+                "Mar": "March",
+                "Apr": "April",
+                "May": "May",
+                "Jun": "June",
+                "Jul": "July",
+                "Aug": "August",
+                "Sep": "September",
+                "Oct": "October",
+                "Nov": "November",
+                "Dec": "December"
+            };
+            const month = monthNames[parts[1]];
+
+            const year = "20" + parts[2];
+
+            // Calculate the correct day of week
+            const monthNumbers = {
+                "Jan": 0,
+                "Feb": 1,
+                "Mar": 2,
+                "Apr": 3,
+                "May": 4,
+                "Jun": 5,
+                "Jul": 6,
+                "Aug": 7,
+                "Sep": 8,
+                "Oct": 9,
+                "Nov": 10,
+                "Dec": 11
+            };
+
+            const date = new Date(parseInt(year), monthNumbers[parts[1]], parseInt(day));
+            const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+            const correctDayOfWeek = daysOfWeek[date.getDay()];
+
+            return {
+                displayDate: `${day} ${month} ${year}`,
+                dayOfWeek: correctDayOfWeek
+            };
+        }
+
+        // Get unique dates from schedule
+        function getUniqueDates() {
+            const uniqueDates = [];
+            const seen = new Set();
+
+            iplSchedule.forEach(match => {
+                if (!seen.has(match.date)) {
+                    seen.add(match.date);
+                    uniqueDates.push(match.date);
+                }
+            });
+
+            return uniqueDates;
+        }
+
+        // Navigate to previous date
+        function goToPrevDate() {
+            const uniqueDates = getUniqueDates();
+            if (currentDateIndex > 0) {
+                currentDateIndex--;
+                updateDateDisplay(uniqueDates[currentDateIndex]);
+            }
+        }
+
+        // Navigate to next date
+        function goToNextDate() {
+            const uniqueDates = getUniqueDates();
+            if (currentDateIndex < uniqueDates.length - 1) {
+                currentDateIndex++;
+                updateDateDisplay(uniqueDates[currentDateIndex]);
+            }
+        }
+
+        // Toggle date dropdown for manual selection
+        function toggleDateDropdown() {
+            const dropdown = document.getElementById('dateDropdown');
+            dropdown.classList.toggle('show');
+
+            if (dropdown.classList.contains('show') && dropdown.children.length === 0) {
+                populateDateDropdown();
+            }
+        }
+
+        // Populate the date dropdown with all available dates
+        function populateDateDropdown() {
+            const dropdown = document.getElementById('dateDropdown');
+            const uniqueDates = getUniqueDates();
+
+            uniqueDates.forEach((date, index) => {
+                const dateInfo = formatDateForDisplay(date);
+
+                const option = document.createElement('div');
+                option.className = 'date-option';
+                if (index === currentDateIndex) {
+                    option.classList.add('selected');
+                }
+
+                option.textContent = `${dateInfo.displayDate} (${dateInfo.dayOfWeek})`;
+                option.dataset.date = date;
+                option.dataset.index = index;
+
+                option.onclick = function(e) {
+                    e.stopPropagation();
+                    currentDateIndex = parseInt(this.dataset.index);
+                    updateDateDisplay(date);
+                    dropdown.classList.remove('show');
+                };
+
+                dropdown.appendChild(option);
+            });
+        }
+
+        // Update date display and matches
+        function updateDateDisplay(date) {
+            const dateInfo = formatDateForDisplay(date);
+            document.getElementById('dateDisplay').textContent = `${dateInfo.displayDate} (${dateInfo.dayOfWeek})`;
+            updateMatchesForSelectedDate(date);
+
+            // Update selected option in dropdown if it's open
+            const dropdown = document.getElementById('dateDropdown');
+            if (dropdown.children.length > 0) {
+                const options = dropdown.querySelectorAll('.date-option');
+                options.forEach(opt => opt.classList.remove('selected'));
+
+                const selectedOption = dropdown.querySelector(`[data-index="${currentDateIndex}"]`);
+                if (selectedOption) {
+                    selectedOption.classList.add('selected');
+                }
+            }
+        }
+
+        // Update matches shown for the selected date
+        function updateMatchesForSelectedDate(date) {
+            const matchContainer = document.getElementById('matchContainer');
+
+            // Clear container
+            matchContainer.innerHTML = '';
+
+            // Filter matches for selected date
+            const matches = iplSchedule.filter(match => match.date === date);
+
+            // Add multi-match class only for days with multiple matches
+            if (matches.length > 1) {
+                matchContainer.classList.add('multi-match-day');
+            } else {
+                matchContainer.classList.remove('multi-match-day');
+            }
+
+            // Create match cards
+            matches.forEach(match => {
+                const teamAClass = teamClasses[match.teamA];
+                const teamBClass = teamClasses[match.teamB];
+
+                const matchCard = document.createElement('div');
+                matchCard.className = 'match-card';
+
+                let matchHTML = `
+                    <div class="match-time"><i class="far fa-clock"></i> ${match.time}</div>
+                    <div class="match-teams">
+                        <div class="team-container">
+                            <div class="team-logo ${teamAClass}">${match.teamAShort}</div>
+                            <div class="team-name">${match.teamA}</div>
+                        </div>
+                        <div class="vs-container">
+                            <div class="vs-badge">VS</div>
+                        </div>
+                        <div class="team-container">
+                            <div class="team-logo ${teamBClass}">${match.teamBShort}</div>
+                            <div class="team-name">${match.teamB}</div>
+                        </div>
+                    </div>
+                    <div class="match-venue"><i class="fas fa-map-marker-alt"></i> ${match.venue}</div>
+                `;
+
+                // Add description badge for playoff matches
+                if (match.description) {
+                    matchHTML += `<div class="match-description">${match.description}</div>`;
+                }
+
+                matchCard.innerHTML = matchHTML;
+                matchCard.onclick = function() {
+                    selectMatch(match, this);
+                };
+                matchContainer.appendChild(matchCard);
+            });
+
+            // Select first match by default
+            if (matches.length > 0) {
+                const firstMatchCard = matchContainer.querySelector('.match-card');
+                firstMatchCard.classList.add('selected');
+                selectMatch(matches[0], firstMatchCard, false);
+            }
+        }
+
+        function selectMatch(match, card, animate = true) {
+            const teamAClass = teamClasses[match.teamA];
+            const teamBClass = teamClasses[match.teamB];
+
+            // Update the team-specific input labels
+            document.getElementById('teamAIndicator').innerHTML = `
+                <div class="mini-logo ${teamAClass}">${match.teamAShort}</div>
+                <span>${match.teamAShort} BET:</span>
+            `;
+
+            document.getElementById('teamBIndicator').innerHTML = `
+                <div class="mini-logo ${teamBClass}">${match.teamBShort}</div>
+                <span>${match.teamBShort} BET:</span>
+            `;
+
+            document.getElementById('teamAPriceIndicator').innerHTML = `
+                <div class="mini-logo ${teamAClass}">${match.teamAShort}</div>
+                <span>${match.teamAShort} Bet Price:</span>
+            `;
+
+            document.getElementById('teamBPriceIndicator').innerHTML = `
+                <div class="mini-logo ${teamBClass}">${match.teamBShort}</div>
+                <span>${match.teamBShort} Bet Price:</span>
+            `;
+
+            // Update input placeholders
+            document.getElementById('A').placeholder = `Enter ${match.teamAShort} bet amount`;
+            document.getElementById('B').placeholder = `Enter ${match.teamBShort} bet amount`;
+            document.getElementById('x').placeholder = `Enter ${match.teamAShort} bet price`;
+            document.getElementById('y').placeholder = `Enter ${match.teamBShort} bet price`;
+
+            // Update result labels
+            document.getElementById('teamAResult').innerHTML = `
+                <div class="team-badge ${teamAClass}">${match.teamAShort}</div> ${match.teamA}:
+            `;
+
+            document.getElementById('teamBResult').innerHTML = `
+                <div class="team-badge ${teamBClass}">${match.teamBShort}</div> ${match.teamB}:
+            `;
+
+            // Remove selection from all cards
+            document.querySelectorAll('.match-card').forEach(c => {
+                c.classList.remove('selected');
+            });
+
+            // Add selection to clicked card
+            card.classList.add('selected');
+        }
+
+        function calculateResults() {
+            // Get the selected match details
+            const selectedCard = document.querySelector('.match-card.selected');
+            if (!selectedCard) return;
+
+            const A = parseFloat(document.getElementById('A').value);
+            const B = parseFloat(document.getElementById('B').value);
+            const x = parseFloat(document.getElementById('x').value);
+            const y = parseFloat(document.getElementById('y').value);
+
+            if (isNaN(A) || isNaN(B) || isNaN(x) || isNaN(y)) {
+                alert("Please enter valid numbers for all betting values");
+                return;
+            }
+
+            // Single bet calculations (profit if team wins minus both prices)
+            const xWinsSingle = A * x - x - y;
+            const yWinsSingle = B * y - x - y;
+
+            // Allover bet calculations (profit for team minus only that team's price)
+            const xWinsAllover = A * x - x;
+            const yWinsAllover = B * y - y;
+
+            // Both wins calculation
+            const bothWins = A * x + B * y - x - y;
+
+            // Update UI elements
+            const xSingleElement = document.getElementById('xWinsSingle');
+            const ySingleElement = document.getElementById('yWinsSingle');
+            const xAlloverElement = document.getElementById('xWinsAllover');
+            const yAlloverElement = document.getElementById('yWinsAllover');
+            const bothWinsElement = document.getElementById('bothWins');
+
+            // Animate counting up to result values
+            animateValue(xSingleElement, parseFloat(xSingleElement.textContent) || 0, xWinsSingle, 1000);
+            animateValue(ySingleElement, parseFloat(ySingleElement.textContent) || 0, yWinsSingle, 1000);
+            animateValue(xAlloverElement, parseFloat(xAlloverElement.textContent) || 0, xWinsAllover, 1000);
+            animateValue(yAlloverElement, parseFloat(yAlloverElement.textContent) || 0, yWinsAllover, 1000);
+            animateValue(bothWinsElement, parseFloat(bothWinsElement.textContent) || 0, bothWins, 1000);
+
+            // Set appropriate styles
+            setCellStyle(xSingleElement, xWinsSingle);
+            setCellStyle(ySingleElement, yWinsSingle);
+            setCellStyle(xAlloverElement, xWinsAllover);
+            setCellStyle(yAlloverElement, yWinsAllover);
+            setCellStyle(bothWinsElement, bothWins);
+        }
+
+        // Function to animate counting up to values
+        function animateValue(element, start, end, duration) {
+            let startTime = null;
+            const startValue = isNaN(start) ? 0 : start;
+
+            function animation(currentTime) {
+                if (!startTime) startTime = currentTime;
+                const timeElapsed = currentTime - startTime;
+                const progress = Math.min(timeElapsed / duration, 1);
+
+                const value = startValue + (end - startValue) * progress;
+                element.textContent = value.toFixed(2);
+
+                if (progress < 1) {
+                    requestAnimationFrame(animation);
+                }
+            }
+
+            requestAnimationFrame(animation);
+        }
+
+        function setCellStyle(element, value) {
+            if (value >= 0) {
+                element.className = 'result-value positive-value';
+            } else {
+                element.className = 'result-value negative-value';
+            }
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('dateDropdown');
+            const dateDisplay = document.getElementById('dateDisplay');
+
+            if (dropdown.classList.contains('show') &&
+                !dropdown.contains(e.target) &&
+                e.target !== dateDisplay) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create stars background
+            createStars();
+
+            // Initialize clock
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+
+            // Set up date navigation
+            document.getElementById('prevDate').addEventListener('click', goToPrevDate);
+            document.getElementById('nextDate').addEventListener('click', goToNextDate);
+            document.getElementById('dateDisplay').addEventListener('click', toggleDateDropdown);
+
+            // Set up calculate button
+            document.getElementById('calculateBtn').addEventListener('click', calculateResults);
+
+            // Get unique dates
+            const uniqueDates = getUniqueDates();
+
+            // Find today's date in schedule or default to first match
+            const now = new Date();
+            const day = String(now.getDate()).padStart(2, '0');
+            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            const month = monthNames[now.getMonth()];
+            const year = String(now.getFullYear()).slice(-2);
+            const today = `${day}-${month}-${year}`;
+
+            // Try to find today's date or default to first date
+            let targetDateIndex = uniqueDates.indexOf(today);
+            if (targetDateIndex === -1) {
+                // If no match for today, find the next closest date
+                const todayTimestamp = now.getTime();
+                let closestDateIndex = 0;
+                let smallestDifference = Infinity;
+
+                uniqueDates.forEach((dateStr, index) => {
+                    const parts = dateStr.split('-');
+                    const matchMonth = monthNames.indexOf(parts[1]);
+                    const matchDate = new Date(2000 + parseInt(parts[2]), matchMonth, parseInt(parts[0])).getTime();
+                    const difference = Math.abs(matchDate - todayTimestamp);
+
+                    if (difference < smallestDifference) {
+                        smallestDifference = difference;
+                        closestDateIndex = index;
+                    }
+                });
+
+                currentDateIndex = closestDateIndex;
+            } else {
+                currentDateIndex = targetDateIndex;
+            }
+
+            // Initialize display with current date
+            updateDateDisplay(uniqueDates[currentDateIndex]);
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>PORTFOLIO WEBSITE</title>
+  </head>
+  <body>
+    <div id="mySidenav" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+      <a href="#services_section">My Skills</a>
+      <a href="#hero">Client</a>
+      <a href="#contactus_section">Contact Us</a>
+    </div>
+    <span style="font-size:30px;cursor:pointer;font-family: 'Times New Roman', Times, serif;" onclick="openNav()">&#9776;MENU</span>
+    <script>
+      function openNav() {
+  document.getElementById("mySidenav").style.width = "250px";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
+    </script>
+    <div class="hero" id="hero">
+      <!-- <img class="img" src="photo-1488998427799-e3362cec87c3.avif" alt="my background photo"> -->
+      <div id="hero-content">
+        <h1>Hi,I am <span>Harsh Parsaniya</span></h1>
+        <p>This is my Portfolio Website.</p>
+        <div id="hero-image">
+          <img src="about-pic.jpg" alt="my photo">
+        </div>
+      </div>
+    </div>
+
+    <div class="service-swipe">
+      <div class="diffSection" id="services_section">
+      <center><p style="font-size: 50px; padding: 0px; padding-bottom: 0px; color: #fff;font-family: 'Times New Roman', Times, serif;">My Skills</p></center>
+      </div>
+      <div class="s-card"><img src="./5848152fcef1014c0b5e4967.webp"><p>Python</p></div>
+      <div class="s-card"><img src="c.png"><p>C language</p></div>
+      <div class="s-card"><img src="c++.png"><p>C++ Language</p></div>
+      <div class="s-card"><img src="java.png"><p>Java</p></div>
+      <div class="s-card"><img src="dsa.png"><p>Data structures and Algorithms</p></div>
+      <div class="s-card"><img src="html.png"><p>Html</p></div>
+      <div class="s-card"><img src="css.png"><p>CSS</p></div>
+      <div class="s-card"><img src="js.png"><p>Javascript</p></div>
+    </div>
+
+    <div class="diffSection" id="contactus_section">
+      <center><p style="font-size: 50px;font-family: 'Times New Roman', Times, serif; padding: 10px">Contact Me</p></center>
+      <div class="csec"></div>
+      <div class="back-contact">
+        <div class="cc">
+        <form action="mailto:shahdhruv318@gmail.com" method="post" enctype="text/plain">
+          <label>First Name <span class="imp">*</span></label><label style="margin-left: 185px">Last Name <span class="imp">*</span></label><br>
+          <center>
+          <input type="text" name="" style="margin-right: 10px; width: 140px" required="required"><input type="text" name="lname" style="width: 140px" required="required"><br>
+          </center>
+          <label>Email <span class="imp">*</span></label><br>
+          <input type="email" name="mail" style="width: 90%" required="required"><br>
+          <label>Message <span class="imp">*</span></label><br>
+          <input type="text" name="message" style="width: 90%" required="required"><br>
+          <label>Additional Details</label><br>
+          <textarea name="addtional"></textarea><br>
+          <button type="submit" id="csubmit">Send Message</button>
+        </form>
+        </div>
+      </div>
+    </div>
+
+
+    <footer>
+      <div class="footer-container">
+        <div class="left-col">
+          <div class="logo"></div>
+          <div class="social-media">
+
+            <a href="https://www.linkedin.com/feed/?trk=hb_signin"><img src="linkedin.png"></a>
+          </div>
+          <p class="rights-text">Copyright © 2023 Created By Harsh Parsaniya All Rights Reserved.</p>
+          <br><p><img src="location.png">DEPSTAR-CHARUSAT<br>Changa</p><br>
+          <p><img src="phone.png"> +91 9016320783<br><img src="mail.png">&nbsp;harshpatel4877@gmail.com</p>
+        </div>
+        
+      </div>
+    </footer>
+  
+  </body>
+</html>

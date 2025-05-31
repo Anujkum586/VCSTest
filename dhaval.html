@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dhaval Agnani | Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Open Sans', sans-serif;
+      color: #e0f7fa;
+      background: linear-gradient(135deg, #0d47a1, #81d4fa);
+      background-attachment: fixed;
+      scroll-behavior: smooth;
+      transition: background-color 0.3s ease;
+    }
+    header, section {
+      padding: 80px 40px;
+      text-align: center;
+    }
+    header {
+      background: linear-gradient(to right, #29b6f6, #03a9f4);
+      color: #fff;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      animation: headerFadeIn 1s ease-out;
+    }
+    @keyframes headerFadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    h1, h2 {
+      margin: 0 0 20px;
+      font-weight: 700;
+    }
+    p, li {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: #b3e5fc;
+    }
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(17, 17, 17, 0.9);
+      padding: 15px 20px;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      display: flex;
+      justify-content: center;
+    }
+    nav a {
+      color: #4dd0e1;
+      margin: 0 20px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease-in-out, transform 0.3s ease-in-out;
+    }
+    nav a:hover {
+      color: #a7ffeb;
+      transform: translateY(-2px);
+    }
+    section {
+      min-height: 100vh;
+      background-color: rgba(27, 49, 71, 0.7);
+      background-blend-mode: overlay;
+      transition: background-color 0.5s ease-in-out;
+    }
+    section:nth-child(even) {
+      background-color: rgba(19, 35, 51, 0.7);
+    }
+    .project, .experience {
+      background: rgba(255, 255, 255, 0.08);
+      margin: 30px auto;
+      padding: 25px;
+      border-radius: 12px;
+      width: 75%;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .project:hover, .experience:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+    footer {
+      background: #0d47a1;
+      color: #e0f7fa;
+      padding: 30px;
+      font-size: 1em;
+      text-align: center;
+    }
+    a {
+      color: #ffca28;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s ease-in-out;
+    }
+    a:hover {
+      color: #fff;
+    }
+    #skills ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    #skills li {
+      background-color: rgba(0, 172, 193, 0.2);
+      color: #00bcd4;
+      padding: 10px 15px;
+      border-radius: 20px;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <a href="#experience">Experience</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <header>
+    <h1>Dhaval Agnani</h1>
+    <p>Cloud Enthusiast | Backend Developer | Network Security Aficionado</p>
+  </header>
+
+  <section id="about">
+    <h2>About Me</h2>
+    <p>
+      I’m Dhaval Agnani, a Computer Engineering undergrad with a hacker's curiosity and a builder’s mindset. I specialize in backend development, cloud infrastructure, and network security. 
+      Whether it’s writing secure APIs, deploying infrastructure on AWS from scratch, or experimenting with Zero Trust Architectures using open-source tools, I bring a hands-on, no-nonsense approach to solving tech problems. 
+      I believe in clean code, strong coffee, and building things that don’t break under pressure.
+    </p>
+  </section>
+
+  <section id="skills">
+    <h2>Skills</h2>
+    <ul>
+      <li><strong>Backend:</strong> Node.js, Express.js, MongoDB, REST APIs, JWT</li>
+      <li><strong>Frontend:</strong> React.js, HTML5, CSS3, JavaScript (ES6+)</li>
+      <li><strong>Dev Tools:</strong> Postman, Git, GitHub, VS Code, Linux CLI</li>
+      <li><strong>Networking:</strong> TCP/IP, CIDR, Subnetting, nftables, Wireshark</li>
+      <li><strong>AWS:</strong> EC2, S3, VPC, RDS, EBS, SNS, IAM, CLI Tools</li>
+      <li><strong>Security:</strong> Zero Trust, MFA, IAM Policies, 802.1X, VPNs</li>
+      <li><strong>Databases:</strong> MariaDB, MySQL, MongoDB, RDS</li>
+      <li><strong>Project & Team:</strong> Agile Methodology, API Docs, Deployment Pipelines</li>
+    </ul>
+  </section>
+
+  <section id="projects">
+    <h2>Projects</h2>
+    <div class="project">
+      <h3>ZTA + Distributed Firewalls</h3>
+      <p>Zero Trust Architecture using open-source tools (Keycloak, nftables) with automated compliance enforcement.</p>
+    </div>
+    <div class="project">
+      <h3>3-Tier Architecture on AWS EC2</h3>
+      <p>Deployed Nginx, Node.js, and MariaDB manually with IP security and environment isolation. Fully CLI-based.</p>
+    </div>
+    <div class="project">
+      <h3>CallBridge</h3>
+      <p>Lightweight web app for video/audio conferencing using WebRTC.</p>
+      <a href="https://github.com/dhavalagnani/CallBridge">GitHub</a>
+    </div>
+    <div class="project">
+      <h3>Optipixel</h3>
+      <p>Image compression portal with AWS S3 storage.</p>
+      <a href="https://github.com/dhavalagnani/Optipixel1">GitHub</a>
+    </div>
+    <div class="project">
+      <h3>Retail Hero</h3>
+      <p>Inventory management system using the MERN stack.</p>
+      <a href="https://github.com/KIRTAN-PATEL-101/mern-inventory">GitHub</a>
+    </div>
+  </section>
+
+  <section id="experience">
+    <h2>Experience</h2>
+    <div class="experience">
+      <h3>Backend Developer Intern @ Mamo Technolabs LLP</h3>
+      <p>May 2023 – June 2023, Vadodara</p>
+      <p>Worked with Node.js, Express, MongoDB. Explored Websockets and Vanilla JS to deliver dynamic backend features.</p>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>Email: <a href="mailto:22dce001@charusat.edu.in">22dce001@charusat.edu.in</a></p>
+    <p>Phone: <a href="tel:+918488958462">+91 84889 58462</a></p>
+    <p>
+      <a href="https://linkedin.com/in/dhaval-agnani-46a733289" target="_blank">LinkedIn</a> | 
+      <a href="https://github.com/dhavalagnani" target="_blank">GitHub</a>
+    </p>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Dhaval Agnani | Made with 💻 and ☕</p>
+  </footer>
+
+  <script>
+    window.addEventListener('scroll', () => {
+      document.querySelectorAll('section').forEach(sec => {
+        const top = window.scrollY;
+        const offset = sec.offsetTop - 150;
+        const height = sec.offsetHeight;
+        if (top >= offset && top < offset + height) {
+          sec.style.backgroundColor = 'rgba(3, 169, 244, 0.1)';
+        } else {
+          sec.style.backgroundColor = '';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
